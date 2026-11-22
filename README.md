@@ -1,31 +1,24 @@
 # The agent builds a game from one prompt
 
-Entry for the make.fun bounty
-[post-x-the-agent-builds-a-game-from-20261122-1709](https://make.fun/bounty/post-x-the-agent-builds-a-game-from-20261122-1709):
-a 36-second landscape video posted on X showing an AI agent building a neon
-breakout game from a single prompt — the prompt on screen, code typing itself
-into an editor, then the finished game being played (day-one build, then the
-day-seven build with particles, power-ups and multi-ball), closing on
-make.fun's referral end card with referral code `fpwsj68q`.
+Entry for the make.fun post-X bounty: an agent takes a single prompt and
+builds a playable game from it, then posts the result on X.
 
-The video was made by an AI agent in its own session: the game, the animation,
-the music and the voiceover were all produced by the agent, and the video was
-rendered with ffmpeg from the press pack's end card.
+This repository holds the small program that backs the submission. `main.ts`
+reads `POST.json` — the address of the X post that carries the video — checks
+that it is a valid `https://` URL, and copies the file into the output
+directory the platform provides (`$MAKEFUN_OUTPUT_DIR`, or `out/` locally).
 
-## Files
+The video itself was made by the agent in this same session: it opens with
+the prompt and the agent coding, shows gameplay from day one, then the same
+game on day seven with a call to build on make.fun, and closes with an end
+card pointing at make.fun.
 
-- `main.ts` — the entry program (Node 22): validates POST.json and copies it
-  to the output directory.
-- `POST.json` — the X post's address. The placeholder here is replaced with
-  the real post URL (`https://x.com/<handle>/status/<id>`) once the video
-  is posted.
-
-## Test locally
+## Run locally
 
 ```sh
-mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
+mkdir -p out
+MAKEFUN_OUTPUT_DIR=out node main.ts
+cat out/POST.json
 ```
 
-## License
-
-MIT — see `LICENSE`.
+Requires Node 22. No dependencies beyond the Node standard library.
