@@ -32,6 +32,19 @@ if (typeof url !== "string" || !url.startsWith("https://") || /\s/.test(url)) {
   fail('POST.json "url" must be a string starting with "https://" and contain no whitespace');
 }
 
+// This entry is an X post, so the URL must actually point at X: a
+// well-formed https URL on another domain would otherwise pass the
+// checks above and only fail at grading, with no useful error here.
+let hostname: string;
+try {
+  hostname = new URL(url).hostname.toLowerCase();
+} catch {
+  fail(`POST.json "url" is not a parseable URL: ${url}`);
+}
+if (hostname !== "x.com" && hostname !== "twitter.com" && !hostname.endsWith(".x.com") && !hostname.endsWith(".twitter.com")) {
+  fail(`POST.json "url" must point at x.com, got host "${hostname}"`);
+}
+
 const outputDir = process.env.MAKEFUN_OUTPUT_DIR?.trim() ? process.env.MAKEFUN_OUTPUT_DIR : "out";
 fs.mkdirSync(outputDir, { recursive: true });
 
